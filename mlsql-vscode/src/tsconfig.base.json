@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2019",
+		"outDir": "out",
+		"lib": [
+			"esnext",
+			"dom"
+		],
+		"sourceMap": true,
+		"rootDir": "src/extension",
+		"strict": true,
+		"moduleResolution": "Node",
+		"noUnusedParameters": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+	},
+}

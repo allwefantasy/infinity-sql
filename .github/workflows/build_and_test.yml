@@ -1,0 +1,60 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+
+name: Build and test
+
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  # Build: build byzer-lang and run the tests
+  build:
+    name: "Build byzer-lang"
+    # Ubuntu 20.04 is the latest LTS. The next LTS is 22.04.
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - spark: 3.3.0
+            java: 8
+            hadoop: 3
+            spark-major: "3.3"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.2
+        with:
+          maven-version: 3.8.2
+
+      - name: Install Java ${{ matrix.java }}
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Install Spark ${{ matrix.spark }}
+        uses: vemonet/setup-spark@v1
+        with:
+          spark-version: ${{ matrix.spark }}
+          hadoop-version: ${{ matrix.hadoop }}
+
+      # Run the tests.
+      - name: Run tests
+        run: ./dev/run-test.sh ${{ matrix.spark-major }}

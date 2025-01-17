@@ -1,0 +1,10 @@
+moduleName=table-repartition-3.3
+mainClass=tech.mlsql.plugins.et.TableRepartition
+scala_version=2.12
+spark_version=3.3
+version=0.1.0-SNAPSHOT
+author=allwefantasy
+mlsqlVersions="1.5.0,1.5.0-SNAPSHOT,1.6.0,1.6.0-SNAPSHOT"
+githubUrl=https://github.com/allwefantasy/mlsql-plugins/tree/master/table-repartition
+mlsqlPluginType=et
+desc=wow

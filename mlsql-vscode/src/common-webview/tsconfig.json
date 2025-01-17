@@ -1,0 +1,17 @@
+{
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"composite": true,
+		"allowSyntheticDefaultImports": true,
+		"rootDir": ".",	
+		"jsx": "react-jsx",		
+		"types": [
+			"node"
+		]
+	},
+	"references": [
+		{
+			"path": "../common"
+		}
+	]
+}

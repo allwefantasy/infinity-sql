@@ -1,0 +1,167 @@
+{
+    "name": "mlsql",
+    "displayName": "Byzer-lang",
+    "description": "The Programming Language Designed For Big Data and AI",
+    "version": "2.3.8",
+    "repository": {
+        "url": "https://github.com/allewfantasy/mlsql-lang-vscode-plugin"
+    },
+    "engines": {
+        "vscode": "^1.59.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "main": "./dist/extension-node.js",
+    "activationEvents": [
+        "onLanguage:mlsql",
+        "onLanguage:mlsql-notebook",
+        "onCommand:mlsql.run",
+        "onNotebook:mlsql-notebook"
+    ],
+    "publisher": "allwefantasy",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "webpack --mode none",
+        "watch": "webpack --mode none --watch  --info-verbosity verbose",
+        "lint": "eslint --config .eslintrc.json ./src/**/*.ts",
+        "ts-compile": "tsc -b",
+        "integration-test": "npm run ts-compile && node ./out/extension/test-integration/runTest.js",
+        "unit-test": "npm run ts-compile && npx mocha ./out/extension/test-unit",
+        "compile-lint-test": "npm run compile && npm run lint && npm run unit-test",
+        "precommit": "npm run lint",
+        "deploy": "npx vsce publish --web --noVerify",
+        "update-api": "npx vscode-dts dev"
+    },
+    "contributes": {
+        "commands": [
+            {
+                "command": "mlsql.run",
+                "title": "Byzer: Run"
+            },
+            {
+                "command": "mlsql.run",
+                "title": "MLSQL: Run"
+            }
+        ],
+        "languages": [
+            {
+                "id": "mlsql",
+                "aliases": [
+                    "Byzer-lang",
+                    "MLSQL",
+                    "mlsql",
+                    "BYZER",
+                    "byzer",
+                    "byzer-lang"
+                ],
+                "extensions": [
+                    "mlsql",
+                    "byzer"
+                ],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "mlsql-notebook",
+                "aliases": [
+                    "Byzer NoteBook"
+                ],
+                "filenamePatterns": [
+                    "*.mlsqlnb",
+                    "*.byzernb"
+                ]
+            }
+        ],
+        "grammars": [
+            {
+                "language": "mlsql",
+                "scopeName": "main.mlsql",
+                "path": "./syntaxes/mlsql.tmLanguage.json",
+                "embeddedLanguages": {
+                    "meta.embedded.block.javascript": "sql"
+                }
+            }
+        ],
+        "notebookRenderer": [
+            {
+                "id": "mlsql-notebook",
+                "displayName": "Byzer Notebook Renderer",
+                "entrypoint": "./dist/renderer.js",
+                "requiresMessaging": "optional",
+                "mimeTypes": [
+                    "x-application/mlsql-notebook"
+                ]
+            }
+        ],
+        "notebooks": [
+            {
+                "id": "mlsql-notebook",
+                "type": "mlsql-notebook",
+                "displayName": "Byzer Notebook",
+                "selector": [
+                    {
+                        "filenamePattern": "*.mlsqlnb"
+                    },
+                    {
+                        "filenamePattern": "*.byzernb"
+                    }
+                ]
+            }
+        ]
+    },
+    "dependencies": {
+        "antd": "^4.16.13",
+        "axios": "^0.21.1",
+        "json5-to-table": "^0.1.5",
+        "lodash": "^4.17.21",
+        "net": "^1.0.2",
+        "object-assign": "^4.1.1",
+        "portfinder": "^1.0.28",
+        "qs": "^6.10.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-router-dom": "^5.2.1",
+        "user-home": "^2.0.0",
+        "uuid": "^8.3.2",
+        "vscode-languageclient": "7.0.0",
+        "xlsx": "^0.17.1"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.3",
+        "@types/lodash": "^4.14.168",
+        "@types/mocha": "^8.2.1",
+        "@types/node": "^12.20.10",
+        "@types/qs": "^6.9.7",
+        "@types/react": "^17.0.19",
+        "@types/react-dom": "^17.0.9",
+        "@types/react-router-dom": "^5.1.8",
+        "@types/user-home": "^2.0.0",
+        "@types/uuid": "^8.3.0",
+        "@types/vscode": "^1.59.0",
+        "@types/vscode-notebook-renderer": "^1.57.8",
+        "@typescript-eslint/eslint-plugin": "^4.18.0",
+        "@typescript-eslint/parser": "^4.18.0",
+        "axios": "^0.21.1",
+        "copy-webpack-plugin": "^9.0.1",
+        "css-loader": "^5.1.3",
+        "eslint": "^7.22.0",
+        "glob": "^7.1.6",
+        "json-stringify-safe": "^5.0.1",
+        "mocha": "^8.3.2",
+        "os": "^0.1.1",
+        "os-browserify": "^0.3.0",
+        "path-browserify": "^1.0.1",
+        "process": "^0.11.10",
+        "style-loader": "^2.0.0",
+        "svg-inline-loader": "^0.8.2",
+        "ts-loader": "^8.0.18",
+        "typescript": "^4.2.3",
+        "url": "^0.11.0",
+        "util": "^0.12.3",
+        "vscode-codicons": "0.0.14",
+        "vscode-dts": "^0.3.1",
+        "vscode-test": "^1.5.1",
+        "webpack": "^5.26.3",
+        "webpack-cli": "^4.5.0"
+    }
+}

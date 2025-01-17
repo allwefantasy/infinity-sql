@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>streamingpro_2.12</artifactId>
+        <groupId>tech.mlsql</groupId>
+        <version>2.4.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <properties>
+        <breeze-version>0.13.2</breeze-version>
+        <!-- spark 3.3 start -->
+        <scala.version>2.12.15</scala.version>
+        <scala.binary.version>2.12</scala.binary.version>
+        <spark.version>3.3.0</spark.version>
+        <spark.bigversion>3.3</spark.bigversion>
+        <scalatest.version>3.2.13</scalatest.version>
+        <!-- spark 3.3 end -->
+
+    </properties>
+
+    <artifactId>streamingpro-it-${spark.bigversion}_${scala.binary.version}</artifactId>
+    
+    <dependencies>
+
+        <dependency>
+            <groupId>tech.mlsql</groupId>
+            <artifactId>streamingpro-mlsql-spark_${spark.bigversion}_${scala.binary.version}</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.scalanlp</groupId>
+            <artifactId>breeze_${scala.binary.version}</artifactId>
+            <version>${breeze-version}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>junit</artifactId>
+                    <groupId>junit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commons-math3</artifactId>
+                    <groupId>org.apache.commons</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.scalactic</groupId>
+            <artifactId>scalactic_${scala.binary.version}</artifactId>
+            <version>${scalatest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dimafeng</groupId>
+            <artifactId>testcontainers-scala_${scala.binary.version}</artifactId>
+            <version>0.40.10</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>testcontainers-scala-kafka_2.12</artifactId>
+                    <groupId>com.dimafeng</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>testcontainers-scala-mysql_2.12</artifactId>
+                    <groupId>com.dimafeng</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>testcontainers-scala-postgresql_2.12</artifactId>
+                    <groupId>com.dimafeng</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>scala-library</artifactId>
+                    <groupId>org.scala-lang</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!--lombok dependencies-->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <version>1.16.20</version>-->
+<!--        </dependency>-->
+        <!-- This is a workaround; to avoid error -->
+        <!-- [ERROR] /work/code/upgrade/byzer-lang/streamingpro-it/src/test/scala/tech/mlsql/it/LocalBaseTestSuite.scala:27:
+        error: Symbol 'type org.apache.spark.sql.SparkSession' is missing from the classpath.
+        [INFO] This symbol is required by 'variable streaming.core.strategy.platform.SparkRuntime.sparkSession'.-->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.12</artifactId>
+            <version>${spark.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <configuration>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+                    <filereports>WDF TestSuite.txt</filereports>
+                    <htmlreporters>${project.build.directory}/html/scalatest</htmlreporters>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <systemProperties>
+                        <currentVersion>${project.version}</currentVersion>
+                        <maven.basedir>${project.basedir}</maven.basedir>
+                        <maven.buildDirectory>${project.build.directory}</maven.buildDirectory>
+                        <maven.finalName>byzer-lang-${spark.version}-${project.version}</maven.finalName>
+                        <maven.finalJarName>byzer-lang-${spark.version}-${scala.binary.version}-${project.version}.jar</maven.finalJarName>
+                    </systemProperties>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

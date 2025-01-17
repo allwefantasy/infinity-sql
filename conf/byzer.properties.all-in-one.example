@@ -1,0 +1,18 @@
+# override example for all-in-one package
+
+byzer.server.mode=all-in-one
+byzer.server.dryrun=false
+
+## define Byzer Engine memory size
+byzer.server.runtime.driver-memory=6g
+
+streaming.name=Byzer-lang-desktop
+streaming.rest=true
+streaming.thrift=false
+streaming.platform=spark
+streaming.spark.service=true
+streaming.job.cancel=true
+streaming.datalake.path=./data/
+streaming.driver.port=9003
+streaming.enableHiveSupport=false
+streaming.plugin.clzznames=tech.mlsql.plugins.ds.MLSQLExcelApp,tech.mlsql.plugins.assert.app.MLSQLAssert,tech.mlsql.plugins.shell.app.MLSQLShell,tech.mlsql.plugins.mllib.app.MLSQLMllib

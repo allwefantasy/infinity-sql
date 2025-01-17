@@ -1,0 +1,127 @@
+{
+  "binlog2delta": {
+    "desc": "",
+    "strategy": "tech.mlsql.dsl.includes.DefaultStrategy",
+    "algorithm": [],
+    "ref": [],
+    "compositor": [
+      {
+        "name": "tech.mlsql.dsl.includes.Step",
+        "desc": "Stream Name",
+        "params": [
+          {
+            "name": "streamName",
+            "form_type": "input",
+            "desc": "uniq stream name",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "tech.mlsql.dsl.includes.Step",
+        "desc": "Collect MySQL Info",
+        "params": [
+          {
+            "name": "host",
+            "form_type": "input",
+            "desc": "MySQL host name",
+            "required": true
+          },
+          {
+            "name": "port",
+            "form_type": "input",
+            "desc": "MySQL port",
+            "required": true
+          },
+          {
+            "name": "userName",
+            "form_type": "input",
+            "desc": "MySQL userName",
+            "required": true
+          },
+          {
+            "name": "password",
+            "form_type": "input",
+            "desc": "MySQL password",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "tech.mlsql.dsl.includes.Step",
+        "desc": "Collect Binlog Info",
+        "params": [
+          {
+            "name": "bingLogNamePrefix",
+            "form_type": "input",
+            "desc": "normally is mysql-bin",
+            "required": true
+          },
+          {
+            "name": "binlogIndex",
+            "form_type": "input",
+            "desc": "number",
+            "required": true
+          },
+          {
+            "name": "binlogFileOffset",
+            "form_type": "input",
+            "desc": "number,normally set 4",
+            "required": true
+          },
+          {
+            "name": "databaseNamePattern",
+            "form_type": "input",
+            "desc": "",
+            "required": true
+          },
+          {
+            "name": "tableNamePattern",
+            "form_type": "input",
+            "desc": "",
+            "required": true
+          }
+        ]
+      },
+      {
+        "name": "tech.mlsql.dsl.includes.Step",
+        "desc": "Configure Sink",
+        "params": [
+          {
+            "name": "deltaTableHome",
+            "form_type": "input",
+            "desc": "HDFS Path where you store data",
+            "required": true
+          },
+          {
+            "name": "idCols",
+            "form_type": "input",
+            "desc": "the primary key of data",
+            "required": true
+          },
+          {
+            "name": "duration",
+            "form_type": "input",
+            "desc": "normally 10 seconds",
+            "required": true
+          },
+          {
+            "name": "dbPrefix",
+            "form_type": "input",
+            "desc": "db prefix",
+            "required": true
+          },
+          {
+            "name": "checkpointLocation",
+            "form_type": "input",
+            "desc": "checkpointLocation",
+            "required": true
+          }
+        ]
+      }
+    ],
+    "configParams": {
+      "entry": "main.mlsql"
+    }
+  }
+}
