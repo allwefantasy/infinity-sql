@@ -12,7 +12,7 @@ echo "${GITHUB_KEY}" | gh auth login --with-token
 
 # Configuration
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-PROJECT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+PROJECT="$( cd "$( dirname "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" )" >/dev/null 2>&1 && pwd )"
 RELEASE_DIR="${PROJECT}/release/${version}"
 
 # Check if release directory exists
