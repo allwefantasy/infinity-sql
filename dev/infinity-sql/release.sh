@@ -52,8 +52,9 @@ ROOT_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 SPARK_VERSION="3.3.0"
 SHORT_SPARK_VERSION="3.3"
-BYZER_LANG_VERSION="2.4.0-SNAPSHOT"
 
+# Get version from Maven project
+BYZER_LANG_VERSION=$(cd ${ROOT_DIR} && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 # Check if current directory is project root
 CURRENT_DIR="$(pwd)"
 if [ "$CURRENT_DIR" != "$ROOT_DIR" ]; then
