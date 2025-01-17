@@ -13,20 +13,33 @@ echo "${GITHUB_KEY}" | gh auth login --with-token
 # Configuration
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 PROJECT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+RELEASE_DIR="${PROJECT}/release/${version}"
 
-VERSION=${version}
+# Check if release directory exists
+if [ ! -d "${RELEASE_DIR}" ]; then
+    echo "Release directory not found: ${RELEASE_DIR}"
+    exit 1
+fi
 
-JAR_PATH=${PROJECT}/target/byzer-retrieval-lib-${version}.tar.gz
+# Get all .tar.gz files in release directory
+RELEASE_FILES=($(find "${RELEASE_DIR}" -name "*.tar.gz"))
 
-# Create a new release
-echo "Creating GitHub release $VERSION..."
-gh release create "$VERSION" \
-    --title "Release $VERSION" \
-    --notes "Release $VERSION" \
-    "$JAR_PATH" --debug
+if [ ${#RELEASE_FILES[@]} -eq 0 ]; then
+    echo "No .tar.gz files found in release directory: ${RELEASE_DIR}"
+    exit 1
+fi
+
+# Create a new release with all files
+echo "Creating GitHub release ${version} with ${#RELEASE_FILES[@]} files..."
+gh release create "${version}" \
+    --title "Release ${version}" \
+    --notes "Release ${version}" \
+    "${RELEASE_FILES[@]}" \
+    --debug
 
 if [ $? -eq 0 ]; then
-    echo "Successfully created release $VERSION and uploaded $JAR_PATH"
+    echo "Successfully created release ${version} and uploaded:"
+    printf ' - %s\n' "${RELEASE_FILES[@]}"
 else
     echo "Failed to create release"
     exit 1
