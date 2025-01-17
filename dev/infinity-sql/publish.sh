@@ -13,7 +13,10 @@ echo "${GITHUB_KEY}" | gh auth login --with-token
 # Configuration
 version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
 PROJECT="$( cd "$( dirname "$( dirname "$( dirname "${BASH_SOURCE[0]}" )" )" )" >/dev/null 2>&1 && pwd )"
-RELEASE_DIR="${PROJECT}/release/${version}"
+
+echo "Project directory: ${PROJECT}"
+
+RELEASE_DIR="${PROJECT}/release"
 
 # Check if release directory exists
 if [ ! -d "${RELEASE_DIR}" ]; then
@@ -35,7 +38,7 @@ gh release create "${version}" \
     --title "Release ${version}" \
     --notes "Release ${version}" \
     "${RELEASE_FILES[@]}" \
-    --debug
+    --target v1.0.0
 
 if [ $? -eq 0 ]; then
     echo "Successfully created release ${version} and uploaded:"
