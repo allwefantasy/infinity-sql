@@ -37,8 +37,7 @@ echo "Creating GitHub release ${version} with ${#RELEASE_FILES[@]} files..."
 gh release create "${version}" \
     --title "Release ${version}" \
     --notes "Release ${version}" \
-    "${RELEASE_FILES[@]}" \
-    --target v1.0.0
+    "${RELEASE_FILES[@]}"
 
 if [ $? -eq 0 ]; then
     echo "Successfully created release ${version} and uploaded:"
