@@ -200,4 +200,5 @@ mlsql-vscode/node_modules/
 template/
 
 byzer-lang-*-*.tar.gz
+infinity-sql-*-*.tar.gz
 mlsql-extensions/*/build/

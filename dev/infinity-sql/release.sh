@@ -309,9 +309,9 @@ create_release_packages() {
     for os in darwin-amd64 darwin-arm64 linux windows; do
         local package_name
         if [[ "$os" == darwin-* ]]; then
-            package_name="byzer-lang-all-in-one-${os}-${SPARK_VERSION}-${BYZER_LANG_VERSION}"
+            package_name="infinity-sql-all-in-one-${os}-${SPARK_VERSION}-${BYZER_LANG_VERSION}"
         else
-            package_name="byzer-lang-all-in-one-${os}-amd64-${SPARK_VERSION}-${BYZER_LANG_VERSION}"
+            package_name="infinity-sql-all-in-one-${os}-amd64-${SPARK_VERSION}-${BYZER_LANG_VERSION}"
         fi
         local package_dir="$base_dir/$package_name"
         
