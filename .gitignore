@@ -202,3 +202,6 @@ template/
 byzer-lang-*-*.tar.gz
 infinity-sql-*-*.tar.gz
 mlsql-extensions/*/build/
+
+/dev/infinity-sql/jdks/
+/dev/infinity-sql/release_template/
