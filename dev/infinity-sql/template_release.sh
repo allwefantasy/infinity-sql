@@ -281,11 +281,93 @@ replace_jdk8() {
 
 replace_jdk8 "$TARGET_OS" "${PACKAGE_DIR}/jdk8"
 
-# 步骤6: 更新二进制文件和脚本
-log_section "步骤6: 更新二进制文件"
+# 步骤6: 编译和更新二进制文件
+log_section "步骤6: 编译和更新二进制文件"
+
+# 编译 mlsql-starter
+compile_mlsql_starter() {
+    local os_type=$1
+    
+    log "开始编译 mlsql-starter for ${os_type}"
+    
+    # 进入 mlsql-starter 目录
+    local starter_dir="${ROOT_DIR}/mlsql-starter"
+    if [ ! -d "$starter_dir" ]; then
+        log "警告: mlsql-starter 目录不存在: $starter_dir"
+        return 1
+    fi
+    
+    cd "$starter_dir"
+    
+    # 确保依赖已安装
+    log "安装 Go 依赖..."
+    go mod tidy
+    
+    # 根据目标平台设置编译参数
+    local goos
+    local goarch
+    local binary_name="byzer-starter"
+    
+    case "$os_type" in
+        "darwin-amd64")
+            goos="darwin"
+            goarch="amd64"
+            ;;
+        "darwin-arm64")
+            goos="darwin"
+            goarch="arm64"
+            ;;
+        "linux")
+            goos="linux"
+            goarch="amd64"
+            ;;
+        "windows")
+            goos="windows"
+            goarch="amd64"
+            binary_name="byzer-starter.exe"
+            ;;
+        *)
+            log "错误: 不支持的操作系统类型: $os_type"
+            return 1
+            ;;
+    esac
+    
+    # 编译
+    log "编译 ${binary_name} for ${goos}/${goarch}"
+    local output_path="${starter_dir}/dist/${binary_name}-${os_type}"
+    if [ "$os_type" = "windows" ]; then
+        output_path="${starter_dir}/dist/${binary_name}"
+    fi
+    
+    mkdir -p "${starter_dir}/dist"
+    
+    GOOS="$goos" GOARCH="$goarch" go build \
+        -ldflags "-X main.version=${BYZER_LANG_VERSION} -X main.buildTime=$(date -u '+%Y-%m-%d_%H:%M:%S') -X main.gitCommit=$(git rev-parse --short HEAD 2>/dev/null || echo 'unknown')" \
+        -o "$output_path" \
+        ./cmd/byzer
+    
+    if [ $? -eq 0 ]; then
+        log "mlsql-starter 编译成功: $output_path"
+        
+        # 拷贝到目标包的 bin 目录
+        log "拷贝 mlsql-starter 到 ${PACKAGE_DIR}/bin/"
+        cp "$output_path" "${PACKAGE_DIR}/bin/${binary_name}"
+        chmod +x "${PACKAGE_DIR}/bin/${binary_name}"
+        
+        log "mlsql-starter 拷贝完成"
+    else
+        log "错误: mlsql-starter 编译失败"
+        return 1
+    fi
+    
+    cd - > /dev/null
+}
 
 update_binaries() {
     local os_type=$1
+    
+    # 编译 mlsql-starter
+    compile_mlsql_starter "$os_type"
     
     # 确定 CLI 二进制文件名
     local cli_name

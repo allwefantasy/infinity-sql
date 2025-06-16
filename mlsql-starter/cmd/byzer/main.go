@@ -95,12 +95,12 @@ func loadConfig(configDir string) (*Config, error) {
 	}
 	
 	// 读取覆盖配置文件
-	overwriteFile := filepath.Join(configDir, "byzer.properties.overwrite")
+	overwriteFile := filepath.Join(configDir, "byzer.properties.override")
 	if _, err := os.Stat(overwriteFile); err == nil {
 		viper.SetConfigName("byzer.properties")
 		viper.SetConfigFile(overwriteFile)
 		if err := viper.MergeInConfig(); err != nil {
-			return nil, fmt.Errorf("读取byzer.properties.overwrite失败: %w", err)
+			return nil, fmt.Errorf("读取byzer.properties.override失败: %w", err)
 		}
 	}
 	
