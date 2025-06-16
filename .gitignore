@@ -205,3 +205,5 @@ mlsql-extensions/*/build/
 
 /dev/infinity-sql/jdks/
 /dev/infinity-sql/release_template/
+mlsql-starter/bin/
+mlsql-starter/example
