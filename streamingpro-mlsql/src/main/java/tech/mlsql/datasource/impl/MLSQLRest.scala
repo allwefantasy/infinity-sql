@@ -14,11 +14,11 @@ import streaming.dsl.ScriptSQLExec
 import streaming.dsl.mmlib.algs.param.{BaseParams, WowParams}
 import streaming.log.WowLog
 import tech.mlsql.common.form._
-import tech.mlsql.common.utils.cache.{CacheBuilder, RemovalListener, RemovalNotification}
 import tech.mlsql.common.utils.distribute.socket.server.JavaUtils
 import tech.mlsql.common.utils.log.Logging
 import tech.mlsql.common.utils.path.PathFun
 import tech.mlsql.crawler.RestUtils.executeWithRetrying
+import tech.mlsql.datasource.helper.MLSQLRestCache
 import tech.mlsql.datasource.helper.rest.PageStrategyDispatcher
 import tech.mlsql.dsl.adaptor.DslTool
 import tech.mlsql.tool.{HDFSOperatorV2, Templates2}
@@ -31,29 +31,6 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConverters._
-
-object MLSQLRestCache extends Logging {
-  val cacheFiles = CacheBuilder.newBuilder().
-    maximumSize(100000).removalListener(new RemovalListener[String, java.util.List[String]]() {
-      override def onRemoval(notification: RemovalNotification[String, util.List[String]]): Unit = {
-        val files = notification.getValue
-        if (files != null) {
-          val fs = FileSystem.get(HDFSOperatorV2.hadoopConfiguration)
-          files.asScala.foreach { file =>
-            try {
-              logInfo(s"remove cache file ${file}")
-              fs.delete(new Path(file), true)
-            } catch {
-              case e: Exception =>
-                logError(s"remove cache file ${file} failed", e)
-            }
-          }
-        }
-      }
-    }).
-    expireAfterWrite(1, TimeUnit.DAYS).
-    build[String, java.util.List[String]]()
-}
 
 class MLSQLRest(override val uid: String) extends MLSQLSource
   with MLSQLSink
