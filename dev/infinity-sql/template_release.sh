@@ -44,7 +44,7 @@ TEMPLATE_DIR="${SCRIPT_DIR}/release_template/base-template"
 JDKS_DIR="${SCRIPT_DIR}/jdks"
 
 # 默认参数
-TARGET_OS="darwin-arm64"
+TARGET_OS="darwin-amd64"
 OUTPUT_DIR="${ROOT_DIR}/release"
 SKIP_BUILD=false
 SPARK_VERSION="3.3.0"
@@ -155,7 +155,7 @@ if [ "$SKIP_BUILD" = false ]; then
     cd ${ROOT_DIR}/mlsql-extensions
     
     extension_version="0.1.0"
-    extensions=("byzer-llm" "mlsql-excel")
+    extensions=("byzer-llm")
     
     for extension in "${extensions[@]}"; do
         log "编译 ${extension}..."
